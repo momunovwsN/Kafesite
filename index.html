@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2b0e12">
+<title>Кафе Ала-Тоо — доставка национальной кухни</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#2b0e12; --bg2:#3a1318; --wine:#6b1e27; --wine2:#8a2a34;
+  --gold:#d9a94e; --gold2:#f0cf86; --gold-d:#b8862e;
+  --cream:#fbf5ea; --paper:#fffaf2; --ink:#2a1a14; --muted:#7a6656; --line:#eadcc4;
+  --ok:#2f7a4f; --err:#c0392b;
+  --r:18px; --r-sm:12px;
+  --shadow:0 10px 30px -12px rgba(43,14,18,.35);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --orn:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23d9a94e' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M48 60c0-12-9-17-15-13s-3 13 4 11c3-1 3-5 0-6'/%3E%3Cpath d='M48 60c0-12 9-17 15-13s3 13-4 11c-3-1-3-5 0-6'/%3E%3Cpath d='M48 60v14M41 78h14M48 30l5 6-5 6-5-6z'/%3E%3Cpath d='M0 14c7 0 10-7 5-10s-7 3-3 5M96 14c-7 0-10-7-5-10s7 3 3 5M0 86c7 0 10 7 5 10M96 86c-7 0-10 7-5 10'/%3E%3C/g%3E%3C/svg%3E");
+  --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cg fill='none' stroke='%23d9a94e' stroke-width='1.5'%3E%3Cpath d='M0 7h6l4-5 4 5-4 5-4-5M26 7h14M20 2l5 5-5 5-5-5z'/%3E%3C/g%3E%3C/svg%3E");
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:130px}
+body{font-family:Manrope,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--cream);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.lock{overflow:hidden}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+.serif{font-family:Lora,Georgia,serif}
+svg{display:block}
+
+/* ---------- header ---------- */
+.hdr{position:sticky;top:0;z-index:40;background:rgba(43,14,18,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:var(--cream);border-bottom:1px solid rgba(217,169,78,.25)}
+.hdr .wrap{display:flex;align-items:center;gap:10px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.logo svg{width:38px;height:38px;color:var(--gold);flex:none}
+.logo b{font-family:Lora,serif;font-size:20px;letter-spacing:.3px;white-space:nowrap}
+.logo small{display:block;font-size:11px;color:var(--gold2);opacity:.85;font-weight:600;letter-spacing:.8px;text-transform:uppercase;line-height:1;white-space:nowrap}
+.nav{display:none;gap:26px;margin-right:18px;font-weight:600;font-size:15px}
+.nav a{opacity:.85;transition:opacity .2s,color .2s}
+.nav a:hover{opacity:1;color:var(--gold2)}
+.lang{display:flex;background:rgba(255,255,255,.08);border-radius:99px;padding:3px;border:1px solid rgba(217,169,78,.3)}
+.lang button{height:34px;min-width:38px;padding:0 9px;border-radius:99px;font-size:13px;font-weight:800;color:rgba(251,245,234,.7);transition:all .25s var(--ease)}
+.lang button.on{background:var(--gold);color:var(--bg)}
+.call{display:flex;align-items:center;justify-content:center;gap:8px;height:42px;width:42px;border-radius:99px;background:var(--gold);color:var(--bg);font-weight:800;font-size:14px;transition:transform .15s}
+.call span{display:none}
+.call:active,.icon-btn:active{transform:scale(.94)}
+.icon-btn{position:relative;height:44px;width:44px;border-radius:99px;display:grid;place-items:center;border:1px solid rgba(217,169,78,.4);transition:transform .15s,background .2s}
+.icon-btn:hover{background:rgba(217,169,78,.12)}
+.badge{position:absolute;top:-4px;right:-4px;min-width:21px;height:21px;padding:0 5px;border-radius:99px;background:#e8473b;color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center;border:2px solid var(--bg);transform:scale(0);transition:transform .3s var(--ease)}
+.badge.show{transform:scale(1)}
+.badge.bump{animation:bump .45s var(--ease)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:radial-gradient(120% 90% at 80% 10%,#5b1a22 0%,var(--bg) 55%,#1e0a0d 100%);color:var(--cream);overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:var(--orn);background-size:96px;opacity:.09}
+.hero .wrap{position:relative;display:grid;gap:28px;padding-top:34px;padding-bottom:56px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold2);padding:7px 14px;border:1px solid rgba(217,169,78,.4);border-radius:99px;background:rgba(217,169,78,.08)}
+.hero h1{font-family:Lora,serif;font-size:clamp(34px,8.6vw,62px);line-height:1.08;margin:16px 0 14px;font-weight:700;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--gold);background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero p.lead{font-size:17px;color:rgba(251,245,234,.8);max-width:520px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:56px;padding:0 26px;border-radius:16px;font-weight:800;font-size:16px;transition:transform .15s var(--ease),box-shadow .25s,background .2s,opacity .2s;user-select:none}
+.btn:active{transform:scale(.97)}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--bg);box-shadow:0 10px 26px -10px rgba(217,169,78,.8)}
+.btn-gold:hover{box-shadow:0 14px 32px -10px rgba(217,169,78,.95)}
+.btn-ghost{border:1.5px solid rgba(251,245,234,.35);color:var(--cream)}
+.btn-ghost:hover{background:rgba(255,255,255,.06)}
+.btn-wine{background:var(--wine);color:var(--cream)}
+.btn-wine:hover{background:var(--wine2)}
+.btn-wa{background:#25d366;color:#06301a}
+.btn-block{width:100%}
+.perks{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.perk{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:9px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.plate-wrap{position:relative;width:min(84vw,420px);aspect-ratio:1;margin:0 auto}
+.ring{position:absolute;inset:0;border-radius:50%;border:1.5px dashed rgba(217,169,78,.45);animation:spin 60s linear infinite}
+.ring::after{content:"";position:absolute;inset:7%;border-radius:50%;border:1px solid rgba(217,169,78,.25)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.plate{position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff6e3,#f0d9a8 60%,#c99a4a);box-shadow:0 30px 60px -20px rgba(0,0,0,.7),inset 0 -10px 30px rgba(120,70,20,.35);display:grid;place-items:center;font-size:clamp(90px,26vw,160px);animation:float 6s ease-in-out infinite}
+.plate::before{content:"";position:absolute;inset:9%;border-radius:50%;border:2px solid rgba(160,100,30,.25)}
+@keyframes float{50%{transform:translateY(-10px)}}
+.orbit{position:absolute;width:66px;height:66px;border-radius:50%;display:grid;place-items:center;font-size:34px;background:var(--paper);box-shadow:var(--shadow);animation:float 5s ease-in-out infinite}
+.orbit.o1{top:2%;left:6%;animation-delay:-1s}
+.orbit.o2{top:10%;right:0;animation-delay:-2.5s}
+.orbit.o3{bottom:4%;left:0;animation-delay:-3.5s}
+.orbit.o4{bottom:8%;right:6%;animation-delay:-.5s}
+.band{height:14px;background:var(--band) repeat-x center;background-size:40px 14px;opacity:.75}
+
+/* ---------- menu ---------- */
+.sec{padding:48px 0}
+.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.sec-h h2{font-family:Lora,serif;font-size:clamp(28px,6vw,40px);line-height:1.1;color:var(--bg)}
+.sec-h p{color:var(--muted);font-size:15px;margin-top:6px}
+.orn-title{display:flex;align-items:center;gap:10px;color:var(--gold-d);font-size:12px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase;margin-bottom:8px}
+.orn-title::before{content:"";width:28px;height:10px;background:var(--band) no-repeat left center;background-size:40px 10px;filter:brightness(.85)}
+
+.tools{position:sticky;top:64px;z-index:30;background:linear-gradient(var(--cream) 82%,rgba(251,245,234,0));padding:10px 0 12px;margin:0 -16px;padding-left:16px;padding-right:16px}
+.search{position:relative}
+.search input{width:100%;height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--paper);padding:0 48px 0 48px;font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(217,169,78,.18)}
+.search .ico{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search .clr{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:12px;display:none;place-items:center;color:var(--muted)}
+.search.has .clr{display:grid}
+.tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:12px -16px 0;padding:2px 16px 4px;scroll-snap-type:x proximity}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;scroll-snap-align:start;height:44px;padding:0 16px;border-radius:99px;background:var(--paper);border:1.5px solid var(--line);font-weight:700;font-size:14.5px;display:flex;align-items:center;gap:7px;white-space:nowrap;transition:all .25s var(--ease)}
+.tab:hover{border-color:var(--gold)}
+.tab.on{background:var(--bg);border-color:var(--bg);color:var(--gold2);box-shadow:0 8px 18px -10px rgba(43,14,18,.7)}
+.tab .n{font-size:12px;opacity:.6;font-weight:800}
+
+.grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:8px}
+.card{background:var(--paper);border-radius:var(--r);overflow:hidden;border:1px solid var(--line);display:grid;grid-template-columns:118px 1fr;transition:transform .3s var(--ease),box-shadow .3s;animation:rise .45s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.card:hover{box-shadow:var(--shadow)}
+.ph{position:relative;display:grid;place-items:center;font-size:58px;min-height:140px;overflow:hidden}
+.ph::before{content:"";position:absolute;inset:0;background:var(--orn);background-size:70px;opacity:.16;mix-blend-mode:overlay}
+.ph::after{content:"";position:absolute;inset:auto 0 0 0;height:40%;background:linear-gradient(transparent,rgba(0,0,0,.18))}
+.ph span{position:relative;z-index:1;filter:drop-shadow(0 8px 10px rgba(0,0,0,.3));transition:transform .4s var(--ease)}
+.card:hover .ph span{transform:scale(1.1) rotate(-4deg)}
+.hit{position:absolute;top:8px;left:8px;z-index:2;background:var(--gold);color:var(--bg);font-size:11px;font-weight:800;padding:3px 8px;border-radius:99px;letter-spacing:.4px;text-transform:uppercase}
+.info{padding:14px 14px 14px 14px;display:flex;flex-direction:column;min-width:0}
+.info h3{font-size:17px;line-height:1.25;font-weight:800}
+.info p{font-size:13.5px;color:var(--muted);margin:4px 0 10px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.price{font-weight:800;font-size:18px;color:var(--wine);white-space:nowrap}
+.price small{font-size:13px;font-weight:700;opacity:.75}
+.add{height:44px;padding:0 14px;border-radius:12px;background:var(--bg);color:var(--gold2);font-weight:800;font-size:14px;display:flex;align-items:center;gap:6px;transition:transform .15s,background .2s;white-space:nowrap}
+.add:hover{background:var(--wine)}
+.add:active{transform:scale(.95)}
+.step{display:flex;align-items:center;height:44px;border-radius:12px;background:var(--bg);color:var(--cream);overflow:hidden;animation:pop .3s var(--ease)}
+@keyframes pop{from{transform:scale(.85);opacity:.4}}
+.step button{width:44px;height:44px;display:grid;place-items:center;font-size:22px;font-weight:700;color:var(--gold2);transition:background .15s}
+.step button:active{background:rgba(255,255,255,.12)}
+.step b{min-width:26px;text-align:center;font-size:16px}
+.step.sm{height:38px;border-radius:10px}
+.step.sm button{width:38px;height:38px;font-size:19px}
+.empty{grid-column:1/-1;text-align:center;padding:48px 16px;color:var(--muted)}
+.empty .e{font-size:46px;margin-bottom:8px}
+
+/* ---------- about ---------- */
+.about{background:var(--bg);color:var(--cream);position:relative;overflow:hidden}
+.about::before{content:"";position:absolute;inset:0;background:var(--orn);background-size:96px;opacity:.07}
+.about .wrap{position:relative;display:grid;gap:26px}
+.about .sec-h h2{color:var(--cream)}
+.about .lead{color:rgba(251,245,234,.8);font-size:16px;max-width:560px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.fact{background:rgba(255,255,255,.05);border:1px solid rgba(217,169,78,.2);border-radius:14px;padding:14px 10px;text-align:center}
+.fact b{display:block;font-family:Lora,serif;font-size:26px;color:var(--gold)}
+.fact span{font-size:12.5px;opacity:.8}
+.info-card{background:rgba(255,255,255,.05);border:1px solid rgba(217,169,78,.22);border-radius:var(--r);padding:20px}
+.info-card h3{font-size:14px;letter-spacing:1.2px;text-transform:uppercase;color:var(--gold2);margin-bottom:12px}
+.hours li{list-style:none;display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed rgba(217,169,78,.2);font-size:15px}
+.hours li:last-child{border:0}
+.hours b{color:var(--gold2)}
+.open-now{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-top:12px;padding:6px 12px;border-radius:99px;background:rgba(47,122,79,.2);color:#8be0ac}
+.open-now::before{content:"";width:8px;height:8px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 4px rgba(61,220,132,.2)}
+.open-now.closed{background:rgba(192,57,43,.2);color:#ffa69c}
+.open-now.closed::before{background:#ff6b5b;box-shadow:0 0 0 4px rgba(255,107,91,.2)}
+.map{position:relative;border-radius:var(--r);min-height:240px;overflow:hidden;background:#3a1a1d;border:1px solid rgba(217,169,78,.25);display:grid;place-items:center;text-align:center;padding:20px}
+.map::before{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(217,169,78,.08) 1px,transparent 1px) 0 0/32px 32px,
+  linear-gradient(rgba(217,169,78,.08) 1px,transparent 1px) 0 0/32px 32px}
+.map::after{content:"";position:absolute;left:-10%;right:-10%;top:55%;height:18px;background:rgba(217,169,78,.12);transform:rotate(-12deg)}
+.map > *{position:relative;z-index:1}
+.pin{font-size:42px;animation:float 3s ease-in-out infinite}
+.map small{display:block;opacity:.7;margin:6px 0 14px}
+
+/* ---------- footer ---------- */
+.ftr{background:#1c080b;color:rgba(251,245,234,.8);padding:40px 0 calc(110px + env(safe-area-inset-bottom))}
+.ftr .wrap{display:grid;gap:26px}
+.ftr .logo b{color:var(--cream)}
+.links{display:grid;gap:4px}
+.links a{display:flex;align-items:center;gap:12px;min-height:48px;padding:6px 0;font-weight:600;transition:color .2s}
+.links a:hover{color:var(--gold2)}
+.links .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(217,169,78,.12);color:var(--gold);flex:none}
+.copy{font-size:13px;opacity:.55;border-top:1px solid rgba(255,255,255,.08);padding-top:18px}
+
+/* ---------- floating cart bar ---------- */
+.cbar{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:45;max-width:520px;margin:0 auto;height:62px;border-radius:18px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--bg);display:flex;align-items:center;gap:12px;padding:0 10px 0 18px;font-weight:800;box-shadow:0 18px 40px -12px rgba(43,14,18,.6);transform:translateY(150%);transition:transform .45s var(--ease)}
+.cbar.show{transform:none}
+.cbar .cnt{width:34px;height:34px;border-radius:10px;background:var(--bg);color:var(--gold2);display:grid;place-items:center;font-size:15px}
+.cbar .lbl{flex:1;font-size:16px}
+.cbar .sum{background:rgba(43,14,18,.12);height:44px;padding:0 14px;border-radius:12px;display:grid;place-items:center;font-size:16px}
+
+/* ---------- drawer ---------- */
+.ovl{position:fixed;inset:0;z-index:60;background:rgba(20,6,8,.55);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .35s}
+.ovl.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;z-index:61;height:100%;height:100dvh;width:min(100%,460px);background:var(--cream);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .45s var(--ease);box-shadow:-20px 0 60px -20px rgba(0,0,0,.5)}
+.drawer.show{transform:none}
+.dh{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 16px;background:var(--bg);color:var(--cream);min-height:64px}
+.dh h2{flex:1;font-family:Lora,serif;font-size:21px}
+.dh .icon-btn{border-color:rgba(217,169,78,.35)}
+.db{flex:1;overflow-y:auto;padding:16px;overscroll-behavior:contain}
+.df{padding:14px 16px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--paper)}
+.view{display:none;animation:fade .35s var(--ease)}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateX(16px)}}
+.ci{display:grid;grid-template-columns:60px 1fr auto;gap:12px;align-items:center;padding:12px;background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;animation:rise .3s var(--ease)}
+.ci .th{width:60px;height:60px;border-radius:12px;display:grid;place-items:center;font-size:32px}
+.ci h4{font-size:15px;line-height:1.25}
+.ci .pp{font-size:13px;color:var(--muted);margin-top:2px}
+.ci .rt{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.ci .lt{font-weight:800;color:var(--wine)}
+.prog{background:var(--paper);border:1px dashed var(--gold);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:14px;font-weight:600}
+.prog .bar{height:8px;border-radius:99px;background:var(--line);margin-top:8px;overflow:hidden}
+.prog .bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--wine2));transition:width .5s var(--ease)}
+.tot{display:grid;gap:6px;margin-bottom:12px;font-size:15px}
+.tot div{display:flex;justify-content:space-between}
+.tot .free{color:var(--ok);font-weight:700}
+.tot .big{font-size:20px;font-weight:800;padding-top:8px;border-top:1px solid var(--line);margin-top:4px}
+.tot .big span:last-child{color:var(--wine)}
+.cempty{text-align:center;padding:60px 10px}
+.cempty .e{font-size:70px;margin-bottom:12px;animation:float 4s ease-in-out infinite}
+.cempty h3{font-family:Lora,serif;font-size:22px}
+.cempty p{color:var(--muted);margin:6px 0 22px}
+
+/* form */
+.fg{margin-bottom:16px}
+.fg > label,.fg > .lb{display:block;font-weight:700;font-size:14px;margin-bottom:7px}
+.fg > label i,.fg > .lb i{color:var(--err);font-style:normal}
+.inp{width:100%;min-height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--paper);padding:13px 15px;font-size:16px;outline:none;transition:border-color .2s,box-shadow .2s}
+.inp:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(217,169,78,.18)}
+textarea.inp{resize:vertical;min-height:84px}
+.tel{display:flex;align-items:stretch}
+.tel span{display:grid;place-items:center;padding:0 12px;border:1.5px solid var(--line);border-right:0;border-radius:14px 0 0 14px;background:#f3e8d6;font-weight:700}
+.tel .inp{border-radius:0 14px 14px 0}
+.fg.bad .inp,.fg.bad .tel span{border-color:var(--err)}
+.err{display:none;color:var(--err);font-size:13px;font-weight:600;margin-top:6px}
+.fg.bad .err{display:block}
+.fg.bad{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#efe3cf;border-radius:14px;padding:4px;position:relative}
+.seg button{position:relative;z-index:1;height:48px;border-radius:11px;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted);transition:color .25s}
+.seg button.on{color:var(--bg)}
+.seg .knob{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:11px;background:var(--paper);box-shadow:0 4px 12px -4px rgba(43,14,18,.3);transition:transform .35s var(--ease)}
+.seg.r .knob{transform:translateX(100%)}
+.pays{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay{position:relative;min-height:56px;border-radius:14px;border:1.5px solid var(--line);background:var(--paper);display:flex;align-items:center;gap:10px;padding:0 12px;font-weight:700;font-size:15px;text-align:left;transition:all .2s}
+.pay .pi{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:13px;font-weight:900;color:#fff;flex:none}
+.pay.on{border-color:var(--wine);background:#fff;box-shadow:0 0 0 3px rgba(107,30,39,.12)}
+.pay.on::after{content:"✓";position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--wine);color:#fff;font-size:12px;display:grid;place-items:center}
+.collapse{display:grid;grid-template-rows:1fr;transition:grid-template-rows .35s var(--ease),opacity .3s}
+.collapse > div{overflow:hidden}
+.collapse.hide{grid-template-rows:0fr;opacity:0}
+.pickup-note{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px;margin-bottom:16px}
+.summary{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:16px;font-size:14px}
+.summary div{display:flex;justify-content:space-between;gap:10px;padding:3px 0}
+.summary div span:first-child{color:var(--muted)}
+.done{text-align:center;padding:40px 6px}
+.check{width:96px;height:96px;margin:0 auto 18px;border-radius:50%;background:rgba(47,122,79,.12);display:grid;place-items:center}
+.check svg{width:52px;height:52px;stroke:var(--ok);stroke-width:4;fill:none;stroke-dasharray:60;stroke-dashoffset:60;animation:draw .6s .2s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.done h3{font-family:Lora,serif;font-size:26px}
+.done p{color:var(--muted);margin:8px 0 22px}
+.done .btn{margin-bottom:10px}
+
+/* toast */
+.toast{position:fixed;left:50%;top:76px;z-index:80;transform:translate(-50%,-20px);opacity:0;pointer-events:none;background:var(--bg);color:var(--cream);padding:11px 18px;border-radius:99px;font-weight:700;font-size:14px;box-shadow:var(--shadow);transition:all .35s var(--ease);white-space:nowrap;border:1px solid rgba(217,169,78,.4)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- responsive ---------- */
+@media (min-width:560px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .card{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .ph{min-height:170px;font-size:78px}
+  .info{padding:16px}
+  .call{width:auto;padding:0 16px}
+  .call span{display:inline}
+}
+@media (min-width:900px){
+  html{scroll-padding-top:150px}
+  .nav{display:flex}
+  .hero .wrap{grid-template-columns:1.1fr .9fr;align-items:center;padding-top:70px;padding-bottom:90px}
+  .grid{grid-template-columns:repeat(3,1fr);gap:20px}
+  .tools{display:grid;grid-template-columns:340px 1fr;gap:16px;align-items:center}
+  .tabs{margin:0;padding:2px 0 4px}
+  .about .wrap{grid-template-columns:1.1fr 1fr;align-items:start}
+  .about .side{display:grid;gap:16px}
+  .ftr .wrap{grid-template-columns:1fr 1fr 1fr}
+  .sec{padding:72px 0}
+}
+@media (min-width:1150px){.grid{grid-template-columns:repeat(4,1fr)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="hdr">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="На главную">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><defs><clipPath id="tc"><circle cx="24" cy="24" r="16"/></clipPath></defs><circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2"/><g clip-path="url(#tc)" stroke="currentColor" stroke-width="2.2" fill="none"><path d="M18 6q-3 18 0 36M24 6v36M30 6q3 18 0 36M6 18q18-3 36 0M6 24h36M6 30q18 3 36 0"/></g></svg>
+      <div><small data-i18n="tagline">Улуттук ашкана</small><b class="js-name">Ала-Тоо</b></div>
+    </a>
+    <nav class="nav">
+      <a href="#menu" data-i18n="navMenu">Меню</a>
+      <a href="#about" data-i18n="navAbout">О нас</a>
+      <a href="#contacts" data-i18n="navContacts">Контакты</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Язык">
+      <button data-lang="ru" class="on">RU</button>
+      <button data-lang="kg">KG</button>
+    </div>
+    <a class="call js-tel" href="#" aria-label="Позвонить">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z"/></svg>
+      <span data-i18n="call">Позвонить</span>
+    </a>
+    <button class="icon-btn" id="cartBtn" aria-label="Корзина">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
+      <span class="badge" id="badge">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">✦ <span data-i18n="eyebrow">Доставка по Бишкеку</span></span>
+      <h1 data-i18n-html="heroTitle">Вкусная <em>национальная кухня</em> с доставкой</h1>
+      <p class="lead" data-i18n="heroLead">Готовим по семейным рецептам из свежих продуктов. Привезём горячим за 40–60 минут.</p>
+      <div class="hero-cta">
+        <a href="#menu" class="btn btn-gold"><span data-i18n="order">Заказать</span> →</a>
+        <a href="#" class="btn btn-ghost js-tel">📞 <span data-i18n="call">Позвонить</span></a>
+      </div>
+      <div class="perks">
+        <div class="perk">⏱ <span data-i18n="perk1">40–60 мин</span></div>
+        <div class="perk">🚚 <span class="js-free"></span></div>
+        <div class="perk">⭐ 4.9 <span data-i18n="perk3">в 2ГИС</span></div>
+      </div>
+    </div>
+    <div class="plate-wrap" aria-hidden="true">
+      <div class="ring"></div>
+      <div class="plate">🍛</div>
+      <div class="orbit o1">🍢</div>
+      <div class="orbit o2">🥟</div>
+      <div class="orbit o3">🫖</div>
+      <div class="orbit o4">🍜</div>
+    </div>
+  </div>
+  <div class="band"></div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="sec" id="menu">
+  <div class="wrap">
+    <div class="sec-h">
+      <div>
+        <div class="orn-title" data-i18n="menuEyebrow">Наше меню</div>
+        <h2 data-i18n="menuTitle">Что приготовить для вас?</h2>
+      </div>
+    </div>
+    <div class="tools">
+      <div class="search" id="searchBox">
+        <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" autocomplete="off" data-i18n-ph="searchPh" placeholder="Поиск по меню: лагман, плов…">
+        <button class="clr" id="clearSearch" aria-label="Очистить">✕</button>
+      </div>
+      <div class="tabs" id="tabs" role="tablist"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="sec about" id="about">
+  <div class="wrap">
+    <div>
+      <div class="orn-title" style="color:var(--gold2)" data-i18n="navAbout">О нас</div>
+      <div class="sec-h"><h2 data-i18n="aboutTitle">Готовим с душой, как дома</h2></div>
+      <p class="lead" data-i18n="aboutText">Мы — семейное кафе, где готовят так, как готовили наши бабушки: в казане, на живом огне и с душой. Каждое блюдо — частичка кыргызского гостеприимства.</p>
+      <div class="facts">
+        <div class="fact"><b>12</b><span data-i18n="fact1">лет работы</span></div>
+        <div class="fact"><b>40+</b><span data-i18n="fact2">блюд в меню</span></div>
+        <div class="fact"><b>15k</b><span data-i18n="fact3">заказов в год</span></div>
+      </div>
+    </div>
+    <div class="side">
+      <div class="info-card">
+        <h3 data-i18n="hours">Часы работы</h3>
+        <ul class="hours">
+          <li><span data-i18n="wd">Пн–Пт</span><b>09:00 – 23:00</b></li>
+          <li><span data-i18n="we">Сб–Вс</span><b>10:00 – 00:00</b></li>
+          <li><span data-i18n="dlv">Доставка</span><b>10:00 – 22:30</b></li>
+        </ul>
+        <div class="open-now" id="openNow"></div>
+      </div>
+      <div class="map">
+        <div>
+          <div class="pin">📍</div>
+          <b class="js-addr"></b>
+          <small data-i18n="mapPh">Здесь будет интерактивная карта 2ГИС / Google Maps</small>
+          <a class="btn btn-gold" id="routeBtn" href="#" target="_blank" rel="noopener" style="height:48px" data-i18n="route">Построить маршрут</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="ftr" id="contacts">
+  <div class="wrap">
+    <div>
+      <div class="logo" style="margin-bottom:12px">
+        <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2"/><g clip-path="url(#tc)" stroke="currentColor" stroke-width="2.2" fill="none"><path d="M18 6q-3 18 0 36M24 6v36M30 6q3 18 0 36M6 18q18-3 36 0M6 24h36M6 30q18 3 36 0"/></g></svg>
+        <div><small data-i18n="tagline">Улуттук ашкана</small><b class="js-name">Ала-Тоо</b></div>
+      </div>
+      <p style="font-size:14px;max-width:320px" data-i18n="ftrText">Национальная кухня с доставкой. Готовим каждый день из свежих продуктов.</p>
+    </div>
+    <div class="links">
+      <a class="js-tel" href="#"><span class="ic">📞</span><span class="js-phone"></span></a>
+      <a class="js-wa" href="#" target="_blank" rel="noopener"><span class="ic">💬</span>WhatsApp</a>
+      <a class="js-ig" href="#" target="_blank" rel="noopener"><span class="ic">📷</span><span class="js-ig-name"></span></a>
+    </div>
+    <div class="links">
+      <a href="#about"><span class="ic">📍</span><span class="js-addr"></span></a>
+      <a class="js-mail" href="#"><span class="ic">✉️</span><span class="js-email"></span></a>
+      <a href="#about"><span class="ic">🕘</span><span data-i18n="daily">Ежедневно 09:00 – 23:00</span></a>
+    </div>
+    <div class="copy" style="grid-column:1/-1">© <span id="yr"></span> <span class="js-name">Ала-Тоо</span>. <span data-i18n="rights">Все права защищены.</span></div>
+  </div>
+</footer>
+
+<!-- ============ FLOATING CART BAR ============ -->
+<button class="cbar" id="cbar">
+  <span class="cnt" id="cbarCnt">0</span>
+  <span class="lbl" data-i18n="cart">Корзина</span>
+  <span class="sum" id="cbarSum">0 сом</span>
+</button>
+
+<!-- ============ CART DRAWER ============ -->
+<div class="ovl" id="ovl"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Корзина">
+  <div class="dh">
+    <button class="icon-btn" id="backBtn" aria-label="Назад" style="display:none;color:var(--cream)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <h2 id="dTitle">Корзина</h2>
+    <button class="icon-btn" id="closeBtn" aria-label="Закрыть" style="color:var(--cream)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="db">
+    <!-- cart -->
+    <div class="view on" id="vCart"></div>
+
+    <!-- checkout -->
+    <form class="view" id="vCheckout" novalidate>
+      <div class="fg" id="fgName">
+        <label for="fName"><span data-i18n="fName">Имя</span> <i>*</i></label>
+        <input class="inp" id="fName" autocomplete="name" data-i18n-ph="fNamePh" placeholder="Как к вам обращаться">
+        <div class="err" data-i18n="eName">Пожалуйста, укажите имя</div>
+      </div>
+      <div class="fg" id="fgPhone">
+        <label for="fPhone"><span data-i18n="fPhone">Телефон</span> <i>*</i></label>
+        <div class="tel"><span>+996</span><input class="inp" id="fPhone" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="700 123 456"></div>
+        <div class="err" data-i18n="ePhone">Введите номер полностью — 9 цифр</div>
+      </div>
+      <div class="fg">
+        <div class="lb" data-i18n="fMode">Способ получения</div>
+        <div class="seg" id="seg">
+          <div class="knob"></div>
+          <button type="button" data-mode="delivery" class="on">🚚 <span data-i18n="delivery">Доставка</span></button>
+          <button type="button" data-mode="pickup">🏃 <span data-i18n="pickup">Самовывоз</span></button>
+        </div>
+      </div>
+      <div class="collapse" id="addrWrap"><div>
+        <div class="fg" id="fgAddr">
+          <label for="fAddr"><span data-i18n="fAddr">Адрес доставки</span> <i>*</i></label>
+          <input class="inp" id="fAddr" autocomplete="street-address" data-i18n-ph="fAddrPh" placeholder="Улица, дом, квартира, ориентир">
+          <div class="err" data-i18n="eAddr">Укажите адрес доставки</div>
+        </div>
+      </div></div>
+      <div class="collapse hide" id="pickWrap"><div>
+        <div class="pickup-note">📍 <span data-i18n="pickFrom">Заберите заказ по адресу:</span> <b class="js-addr"></b></div>
+      </div></div>
+      <div class="fg">
+        <div class="lb" data-i18n="fPay">Способ оплаты</div>
+        <div class="pays" id="pays">
+          <button type="button" class="pay on" data-pay="cash"><span class="pi" style="background:#3c8d5a">💵</span><span data-i18n="cash">Наличные</span></button>
+          <button type="button" class="pay" data-pay="card"><span class="pi" style="background:#3a4a8c">💳</span><span data-i18n="card">Карта</span></button>
+          <button type="button" class="pay" data-pay="elsom"><span class="pi" style="background:#e3a21a">Э</span>Элсом</button>
+          <button type="button" class="pay" data-pay="mbank"><span class="pi" style="background:#0bb08a">M</span>MBANK</button>
+        </div>
+      </div>
+      <div class="fg">
+        <label for="fComment" data-i18n="fComment">Комментарий</label>
+        <textarea class="inp" id="fComment" data-i18n-ph="fCommentPh" placeholder="Пожелания: без лука, позвонить заранее, сдача с 1000…"></textarea>
+      </div>
+      <div class="summary" id="summary"></div>
+    </form>
+
+    <!-- done -->
+    <div class="view" id="vDone">
+      <div class="done">
+        <div class="check"><svg viewBox="0 0 52 52"><path d="M14 27l8 8 16-17"/></svg></div>
+        <h3 data-i18n="doneTitle">Заказ сформирован!</h3>
+        <p data-i18n="doneText">Мы открыли WhatsApp с текстом вашего заказа. Нажмите «Отправить» в чате — и мы сразу начнём готовить.</p>
+        <a class="btn btn-wa btn-block" id="waAgain" href="#" target="_blank" rel="noopener">💬 <span data-i18n="waAgain">Открыть WhatsApp ещё раз</span></a>
+        <button class="btn btn-wine btn-block" id="newOrder" data-i18n="newOrder">Новый заказ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="df" id="dFoot"></div>
+</aside>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   НАСТРОЙКИ КАФЕ — поменяйте под себя
+   ========================================================= */
+const CONFIG = {
+  name: "Ала-Тоо",
+  phone: "+996 700 123 456",
+  whatsapp: "996700123456",          // номер для wa.me без «+»
+  instagram: "alatoo.cafe",
+  email: "info@alatoo-cafe.kg",
+  address: { ru: "г. Бишкек, ул. Киевская, 120", kg: "Бишкек ш., Киев көчөсү, 120" },
+  mapQuery: "Бишкек, Киевская 120",
+  deliveryFee: 150,                   // сом
+  freeFrom: 1500,                     // бесплатная доставка от суммы
+  hours: { weekday: [9, 23], weekend: [10, 24] }
+};
+
+/* ---------- переводы ---------- */
+const I18N = {
+  ru: {
+    tagline:"Национальная кухня", navMenu:"Меню", navAbout:"О нас", navContacts:"Контакты", call:"Позвонить",
+    eyebrow:"Доставка по Бишкеку", heroTitle:"Вкусная <em>национальная кухня</em> с доставкой",
+    heroLead:"Готовим по семейным рецептам из свежих продуктов. Привезём горячим за 40–60 минут.",
+    order:"Заказать", perk1:"40–60 мин", perk3:"в 2ГИС", freeFrom:"Бесплатно от {n} сом",
+    menuEyebrow:"Наше меню", menuTitle:"Что приготовить для вас?", searchPh:"Поиск по меню: лагман, плов…",
+    all:"Все", hit:"Хит", add:"В корзину", som:"сом",
+    notFound:"Ничего не найдено", notFoundHint:"Попробуйте другой запрос или выберите категорию",
+    aboutTitle:"Готовим с душой, как дома",
+    aboutText:"Мы — семейное кафе, где готовят так, как готовили наши бабушки: в казане, на живом огне и с душой. Каждое блюдо — частичка кыргызского гостеприимства.",
+    fact1:"лет работы", fact2:"блюд в меню", fact3:"заказов в год",
+    hours:"Часы работы", wd:"Пн–Пт", we:"Сб–Вс", dlv:"Доставка", openNow:"Сейчас открыто", closedNow:"Сейчас закрыто",
+    mapPh:"Здесь будет интерактивная карта 2ГИС / Google Maps", route:"Построить маршрут",
+    ftrText:"Национальная кухня с доставкой. Готовим каждый день из свежих продуктов.",
+    daily:"Ежедневно 09:00 – 23:00", rights:"Все права защищены.",
+    cart:"Корзина", checkout:"Оформление", done:"Готово",
+    emptyTitle:"Корзина пока пуста", emptyText:"Добавьте любимые блюда из меню", toMenu:"Перейти в меню",
+    toFree:"До бесплатной доставки осталось <b>{n} сом</b>", freeOk:"🎉 Доставка бесплатная!",
+    subtotal:"Сумма", deliveryFee:"Доставка", free:"Бесплатно", total:"Итого",
+    goCheckout:"Оформить заказ", send:"Отправить заказ в WhatsApp", added:"добавлено в корзину",
+    fName:"Имя", fNamePh:"Как к вам обращаться", fPhone:"Телефон", fMode:"Способ получения",
+    delivery:"Доставка", pickup:"Самовывоз", fAddr:"Адрес доставки", fAddrPh:"Улица, дом, квартира, ориентир",
+    pickFrom:"Заберите заказ по адресу:", fPay:"Способ оплаты", cash:"Наличные", card:"Карта",
+    fComment:"Комментарий", fCommentPh:"Пожелания: без лука, позвонить заранее, сдача с 1000…",
+    eName:"Пожалуйста, укажите имя", ePhone:"Введите номер полностью — 9 цифр", eAddr:"Укажите адрес доставки",
+    items:"Блюд", pcs:"шт",
+    doneTitle:"Заказ сформирован!", doneText:"Мы открыли WhatsApp с текстом вашего заказа. Нажмите «Отправить» в чате — и мы сразу начнём готовить.",
+    waAgain:"Открыть WhatsApp ещё раз", newOrder:"Новый заказ",
+    msgHead:"🧾 *Новый заказ — {name}*", msgName:"👤 Имя", msgPhone:"📞 Телефон", msgDelivery:"🚚 Доставка", msgPickup:"🏃 Самовывоз",
+    msgPay:"💳 Оплата", msgComment:"💬 Комментарий", msgOrder:"*Состав заказа:*"
+  },
+  kg: {
+    tagline:"Улуттук ашкана", navMenu:"Меню", navAbout:"Биз жөнүндө", navContacts:"Байланыш", call:"Чалуу",
+    eyebrow:"Бишкек боюнча жеткирүү", heroTitle:"Жеткирүү менен даамдуу <em>улуттук ашкана</em>",
+    heroLead:"Үй-бүлөлүк рецепттер менен жаңы азыктардан даярдайбыз. 40–60 мүнөттө ысык бойдон жеткиребиз.",
+    order:"Заказ берүү", perk1:"40–60 мүн", perk3:"2ГИСте", freeFrom:"{n} сомдон акысыз",
+    menuEyebrow:"Биздин меню", menuTitle:"Сизге эмне даярдайлы?", searchPh:"Менюдан издөө: лагман, палоо…",
+    all:"Баары", hit:"Хит", add:"Себетке", som:"сом",
+    notFound:"Эч нерсе табылган жок", notFoundHint:"Башка сөз менен издеңиз же категория тандаңыз",
+    aboutTitle:"Үйдөгүдөй, жан дилден даярдайбыз",
+    aboutText:"Биз — чоң энелерибиз даярдагандай тамак жасаган үй-бүлөлүк кафебиз: казанда, ачык отто жана жан дилден. Ар бир тамак — кыргыз меймандостугунун бир бөлүгү.",
+    fact1:"жыл иштейбиз", fact2:"тамак менюда", fact3:"буйрутма жылына",
+    hours:"Иш убактысы", wd:"Дш–Жм", we:"Иш–Жк", dlv:"Жеткирүү", openNow:"Азыр ачык", closedNow:"Азыр жабык",
+    mapPh:"Бул жерде 2ГИС / Google Maps картасы болот", route:"Жол көрсөтүү",
+    ftrText:"Жеткирүү менен улуттук ашкана. Күн сайын жаңы азыктардан даярдайбыз.",
+    daily:"Күн сайын 09:00 – 23:00", rights:"Бардык укуктар корголгон.",
+    cart:"Себет", checkout:"Буйрутма берүү", done:"Даяр",
+    emptyTitle:"Себет азырынча бош", emptyText:"Менюдан сүйүктүү тамактарыңызды кошуңуз", toMenu:"Менюга өтүү",
+    toFree:"Акысыз жеткирүүгө чейин <b>{n} сом</b> калды", freeOk:"🎉 Жеткирүү акысыз!",
+    subtotal:"Сумма", deliveryFee:"Жеткирүү", free:"Акысыз", total:"Бардыгы",
+    goCheckout:"Буйрутма берүү", send:"Буйрутманы WhatsApp'ка жөнөтүү", added:"себетке кошулду",
+    fName:"Атыңыз", fNamePh:"Сизге кантип кайрылалы", fPhone:"Телефон", fMode:"Алуу ыкмасы",
+    delivery:"Жеткирүү", pickup:"Өзү алып кетүү", fAddr:"Жеткирүү дареги", fAddrPh:"Көчө, үй, батир, белги",
+    pickFrom:"Буйрутманы бул даректен алыңыз:", fPay:"Төлөм ыкмасы", cash:"Накталай", card:"Карта",
+    fComment:"Комментарий", fCommentPh:"Каалоолор: пиязсыз, алдын ала чалуу, 1000ден майда…",
+    eName:"Атыңызды жазыңыз", ePhone:"Номерди толук жазыңыз — 9 сан", eAddr:"Жеткирүү дарегин жазыңыз",
+    items:"Тамак", pcs:"даана",
+    doneTitle:"Буйрутма даяр!", doneText:"WhatsApp'та буйрутмаңыздын тексти ачылды. Чатта «Жөнөтүү» баскычын басыңыз — биз дароо даярдай баштайбыз.",
+    waAgain:"WhatsApp'ты кайра ачуу", newOrder:"Жаңы буйрутма",
+    msgHead:"🧾 *Жаңы буйрутма — {name}*", msgName:"👤 Аты", msgPhone:"📞 Телефон", msgDelivery:"🚚 Жеткирүү", msgPickup:"🏃 Өзү алып кетет",
+    msgPay:"💳 Төлөм", msgComment:"💬 Комментарий", msgOrder:"*Буйрутманын курамы:*"
+  }
+};
+
+const CATS = [
+  { id:"soup",  emoji:"🍲", ru:"Супы",          kg:"Шорполор" },
+  { id:"main",  emoji:"🍛", ru:"Вторые блюда",  kg:"Экинчи тамактар" },
+  { id:"bbq",   emoji:"🍢", ru:"Шашлык",        kg:"Шашлык" },
+  { id:"salad", emoji:"🥗", ru:"Салаты",        kg:"Салаттар" },
+  { id:"bake",  emoji:"🥐", ru:"Выпечка",       kg:"Нан-токоч" },
+  { id:"drink", emoji:"🫖", ru:"Чай и напитки", kg:"Чай жана суусундуктар" }
+];
+const GRAD = {
+  soup:"linear-gradient(135deg,#f6c26b,#c8572e)", main:"linear-gradient(135deg,#f2b25c,#8a2a34)",
+  bbq:"linear-gradient(135deg,#ef8f4e,#5a1a22)", salad:"linear-gradient(135deg,#b8d97a,#2f7a4f)",
+  bake:"linear-gradient(135deg,#f7dfa6,#c98a3a)", drink:"linear-gradient(135deg,#e7c08a,#6b3a22)"
+};
+
+const DISHES = [
+  { id:1,  cat:"soup",  e:"🍲", p:230, hit:1, ru:["Шорпо","Наваристый бульон из баранины с картофелем, морковью и зеленью"], kg:["Шорпо","Кой этинен жасалган коюу сорпо, картошка, сабиз жана көк чөп менен"] },
+  { id:2,  cat:"soup",  e:"🥣", p:210,        ru:["Мастава","Густой рисовый суп с мясом, овощами и ложкой каймака"], kg:["Мастава","Эт, жашылча жана каймак кошулган коюу күрүч шорпо"] },
+  { id:3,  cat:"main",  e:"🍜", p:250, hit:1, ru:["Лагман","Тянутая вручную лапша с говядиной и овощами в соусе"], kg:["Лагман","Колго созулган кесме, уй эти жана жашылча соусу менен"] },
+  { id:4,  cat:"main",  e:"🍛", p:280, hit:1, ru:["Плов","Узгенский рис, баранина, жёлтая морковь, нут и чеснок в казане"], kg:["Палоо","Өзгөн күрүчү, кой эти, сары сабиз, нокот жана сарымсак казанда"] },
+  { id:5,  cat:"main",  e:"🥘", p:350,        ru:["Бешбармак","Домашняя лапша с отварной бараниной, луком и сорпо"], kg:["Бешбармак","Үй кесмеси, бышкан кой эти, пияз жана сорпо менен"] },
+  { id:6,  cat:"main",  e:"🥟", p:220, hit:1, ru:["Манты (5 шт)","Сочные манты на пару с рубленой бараниной и курдючным жиром"], kg:["Манты (5 даана)","Буга бышкан ширелүү манты, туурама кой эти жана куйрук май менен"] },
+  { id:7,  cat:"main",  e:"🍖", p:300,        ru:["Куурдак","Обжаренное мясо с картофелем и луком — сытно и по-домашнему"], kg:["Куурдак","Картошка жана пияз менен куурулган эт — тойимдүү, үйдөгүдөй"] },
+  { id:8,  cat:"bbq",   e:"🍢", p:180, hit:1, ru:["Шашлык из баранины","Сочная баранина на углях с маринованным луком"], kg:["Кой этинен шашлык","Чокко бышкан ширелүү кой эти, маринаддалган пияз менен"] },
+  { id:9,  cat:"bbq",   e:"🍗", p:150,        ru:["Шашлык из курицы","Нежное куриное бедро в пряном маринаде"], kg:["Тоок этинен шашлык","Ачуу-татымал маринаддагы жумшак тоок эти"] },
+  { id:10, cat:"salad", e:"🍅", p:120,        ru:["Ачык-чучук","Помидоры, огурцы, лук и острый перец — к плову и шашлыку"], kg:["Ачык-чучук","Помидор, бадыраң, пияз жана ачуу калемпир — палоо менен шашлыкка"] },
+  { id:11, cat:"salad", e:"🌶️", p:150,       ru:["Ашлянфу","Холодная лапша с крахмалом, омлетом и острой заправкой"], kg:["Ашлянфу","Крахмал, омлет жана ачуу соус кошулган муздак кесме"] },
+  { id:12, cat:"bake",  e:"🥐", p:70,  hit:1, ru:["Самса","Слоёная самса из тандыра с мясом и луком"], kg:["Самса","Эт жана пияз менен тандырда бышкан катмарлуу самса"] },
+  { id:13, cat:"bake",  e:"🍩", p:100,        ru:["Боорсок","Золотистые пышные боорсоки — к чаю и шорпо"], kg:["Боорсок","Алтындай кызарган жумшак боорсок — чай жана шорпого"] },
+  { id:14, cat:"drink", e:"🫖", p:60,         ru:["Чайник чая","Чёрный или зелёный чай, подаётся с сахаром и лимоном"], kg:["Бир чайнек чай","Кара же көк чай, кант жана лимон менен"] },
+  { id:15, cat:"drink", e:"🧋", p:70,         ru:["Максым","Традиционный освежающий напиток из злаков, 0,5 л"], kg:["Максым","Дан эгиндеринен салттуу сергиткич суусундук, 0,5 л"] }
+];
+
+/* ---------- состояние ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+const S = {
+  lang: store.get("cafe_lang","ru"),
+  cat: "all", q: "",
+  cart: store.get("cafe_cart", {}),
+  mode: "delivery", pay: "cash", view: "cart", lastUrl: ""
+};
+// убираем из сохранённой корзины несуществующие блюда
+Object.keys(S.cart).forEach(id => { if(!byId(+id) || S.cart[id] < 1) delete S.cart[id]; });
+
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+function byId(id){ return DISHES.find(d => d.id === id); }
+function t(k, vars){ let s = (I18N[S.lang][k] ?? I18N.ru[k] ?? k); if(vars) for(const v in vars) s = s.replace("{"+v+"}", vars[v]); return s; }
+function fmt(n){ return n.toLocaleString("ru-RU").replace(/,/g," ") + " " + t("som"); }
+function nm(d){ return d[S.lang][0]; }
+function ds(d){ return d[S.lang][1]; }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ---------- расчёты ---------- */
+function count(){ return Object.values(S.cart).reduce((a,b)=>a+b,0); }
+function subtotal(){ return Object.entries(S.cart).reduce((a,[id,q])=>a + byId(+id).p*q, 0); }
+function fee(){ if(S.mode==="pickup") return 0; return subtotal() >= CONFIG.freeFrom ? 0 : CONFIG.deliveryFee; }
+function total(){ return subtotal() + fee(); }
+
+/* ---------- статические тексты ---------- */
+function applyStatic(){
+  document.documentElement.lang = S.lang === "kg" ? "ky" : "ru";
+  $$("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  $$("[data-i18n-html]").forEach(el => el.innerHTML = t(el.dataset.i18nHtml));
+  $$("[data-i18n-ph]").forEach(el => el.placeholder = t(el.dataset.i18nPh));
+  $$("[data-lang]").forEach(b => b.classList.toggle("on", b.dataset.lang === S.lang));
+  $$(".js-addr").forEach(el => el.textContent = CONFIG.address[S.lang]);
+  $$(".js-free").forEach(el => el.textContent = t("freeFrom",{n:CONFIG.freeFrom}));
+  updateOpenNow();
+}
+function applyConfig(){
+  document.title = CONFIG.name + " — национальная кухня с доставкой";
+  $$(".js-name").forEach(el => el.textContent = CONFIG.name);
+  $$(".js-tel").forEach(a => a.href = "tel:" + CONFIG.phone.replace(/\s/g,""));
+  $$(".js-phone").forEach(el => el.textContent = CONFIG.phone);
+  $$(".js-wa").forEach(a => a.href = "https://wa.me/" + CONFIG.whatsapp);
+  $$(".js-ig").forEach(a => a.href = "https://instagram.com/" + CONFIG.instagram);
+  $$(".js-ig-name").forEach(el => el.textContent = "@" + CONFIG.instagram);
+  $$(".js-mail").forEach(a => a.href = "mailto:" + CONFIG.email);
+  $$(".js-email").forEach(el => el.textContent = CONFIG.email);
+  $("#routeBtn").href = "https://2gis.kg/bishkek/search/" + encodeURIComponent(CONFIG.mapQuery);
+  $("#yr").textContent = new Date().getFullYear();
+}
+function updateOpenNow(){
+  const d = new Date(), wk = d.getDay()===0 || d.getDay()===6;
+  const [o,c] = wk ? CONFIG.hours.weekend : CONFIG.hours.weekday;
+  const h = d.getHours() + d.getMinutes()/60, open = h >= o && h < c;
+  const el = $("#openNow"); el.textContent = t(open ? "openNow" : "closedNow"); el.classList.toggle("closed", !open);
+}
+
+/* ---------- меню ---------- */
+function renderTabs(){
+  const all = [{id:"all", emoji:"✦", ru:I18N.ru.all, kg:I18N.kg.all}, ...CATS];
+  $("#tabs").innerHTML = all.map(c => {
+    const n = c.id==="all" ? DISHES.length : DISHES.filter(d=>d.cat===c.id).length;
+    const on = !S.q && S.cat===c.id;
+    return `<button class="tab${on?" on":""}" role="tab" aria-selected="${on}" data-cat="${c.id}">${c.emoji} ${c[S.lang]} <span class="n">${n}</span></button>`;
+  }).join("");
+}
+function ctrlHTML(d){
+  const q = S.cart[d.id] || 0;
+  if(!q) return `<button class="add" data-act="add" data-id="${d.id}">+ ${t("add")}</button>`;
+  return `<div class="step"><button data-act="dec" data-id="${d.id}" aria-label="−">−</button><b>${q}</b><button data-act="inc" data-id="${d.id}" aria-label="+">+</button></div>`;
+}
+function renderMenu(){
+  const q = S.q.trim().toLowerCase();
+  let list = DISHES;
+  if(q) list = DISHES.filter(d => (d.ru[0]+" "+d.kg[0]+" "+d.ru[1]+" "+d.kg[1]).toLowerCase().includes(q));
+  else if(S.cat !== "all") list = DISHES.filter(d => d.cat === S.cat);
+  if(!list.length){
+    $("#grid").innerHTML = `<div class="empty"><div class="e">🔍</div><b>${t("notFound")}</b><p>${t("notFoundHint")}</p></div>`;
+    return;
+  }
+  $("#grid").innerHTML = list.map((d,i) => `
+    <article class="card" style="animation-delay:${Math.min(i,8)*40}ms">
+      <div class="ph" style="background:${GRAD[d.cat]}">${d.hit?`<span class="hit">${t("hit")}</span>`:""}<span>${d.e}</span></div>
+      <div class="info">
+        <h3>${esc(nm(d))}</h3>
+        <p>${esc(ds(d))}</p>
+        <div class="row">
+          <div class="price">${d.p} <small>${t("som")}</small></div>
+          <div class="ctrl" data-ctrl="${d.id}">${ctrlHTML(d)}</div>
+        </div>
+      </div>
+    </article>`).join("");
+}
+function refreshCtrl(id){
+  const el = document.querySelector(`[data-ctrl="${id}"]`);
+  if(el) el.innerHTML = ctrlHTML(byId(id));
+}
+
+/* ---------- корзина ---------- */
+function setQty(id, q, silent){
+  const prev = S.cart[id] || 0;
+  if(q <= 0) delete S.cart[id]; else S.cart[id] = q;
+  store.set("cafe_cart", S.cart);
+  refreshCtrl(id);
+  updateBadges(q > prev);
+  renderDrawer();
+  if(!silent && q > prev && prev === 0) toast(`${byId(id).e} ${nm(byId(id))} — ${t("added")}`);
+}
+function updateBadges(bump){
+  const n = count(), b = $("#badge");
+  b.textContent = n; b.classList.toggle("show", n > 0);
+  if(bump){ b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump"); }
+  $("#cbarCnt").textContent = n;
+  $("#cbarSum").textContent = fmt(subtotal());
+  $("#cbar").classList.toggle("show", n > 0 && !$("#drawer").classList.contains("show"));
+}
+function totalsHTML(){
+  const f = fee();
+  return `<div class="tot">
+    <div><span>${t("subtotal")}</span><span>${fmt(subtotal())}</span></div>
+    <div><span>${t("deliveryFee")}</span><span class="${f?"":"free"}">${S.mode==="pickup" ? "—" : (f ? fmt(f) : t("free"))}</span></div>
+    <div class="big"><span>${t("total")}</span><span>${fmt(total())}</span></div>
+  </div>`;
+}
+function renderDrawer(){
+  const n = count();
+  $("#backBtn").style.display = S.view === "checkout" ? "grid" : "none";
+  $("#dTitle").textContent = t(S.view === "cart" ? "cart" : S.view === "checkout" ? "checkout" : "done");
+  ["cart","checkout","done"].forEach(v => $("#v"+v[0].toUpperCase()+v.slice(1)).classList.toggle("on", S.view === v));
+
+  if(S.view === "cart"){
+    if(!n){
+      $("#vCart").innerHTML = `<div class="cempty"><div class="e">🧺</div><h3>${t("emptyTitle")}</h3><p>${t("emptyText")}</p><button class="btn btn-wine" data-close>${t("toMenu")}</button></div>`;
+      $("#dFoot").style.display = "none";
+      return;
+    }
+    const sub = subtotal(), left = CONFIG.freeFrom - sub, pct = Math.min(100, sub / CONFIG.freeFrom * 100);
+    $("#vCart").innerHTML =
+      `<div class="prog">${left > 0 ? t("toFree",{n:left}) : t("freeOk")}<div class="bar"><i style="width:${pct}%"></i></div></div>` +
+      Object.entries(S.cart).map(([id,q]) => { const d = byId(+id); return `
+        <div class="ci">
+          <div class="th" style="background:${GRAD[d.cat]}">${d.e}</div>
+          <div><h4>${esc(nm(d))}</h4><div class="pp">${d.p} ${t("som")} × ${q}</div></div>
+          <div class="rt"><span class="lt">${fmt(d.p*q)}</span>
+            <div class="step sm"><button data-act="dec" data-id="${d.id}" aria-label="−">−</button><b>${q}</b><button data-act="inc" data-id="${d.id}" aria-label="+">+</button></div>
+          </div>
+        </div>`; }).join("");
+    $("#dFoot").style.display = "";
+    $("#dFoot").innerHTML = totalsHTML() + `<button class="btn btn-gold btn-block" id="goCheckout">${t("goCheckout")} →</button>`;
+  } else if(S.view === "checkout"){
+    if(!n){ S.view = "cart"; return renderDrawer(); }
+    $("#summary").innerHTML = Object.entries(S.cart).map(([id,q]) => `<div><span>${esc(nm(byId(+id)))} × ${q}</span><span>${fmt(byId(+id).p*q)}</span></div>`).join("");
+    $("#dFoot").style.display = "";
+    $("#dFoot").innerHTML = totalsHTML() + `<button class="btn btn-wa btn-block" id="sendOrder"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a8 8 0 0 1-4-3.5c-.3-.5.3-.5.9-1.6.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.4 3.4 0 0 0-1 2.5 5.9 5.9 0 0 0 1.2 3.1 13.5 13.5 0 0 0 5.2 4.6c1.9.8 2.7.9 3.6.7a3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.4zM12 2a10 10 0 0 0-8.6 15l-1.4 5 5.1-1.3A10 10 0 1 0 12 2z"/></svg>${t("send")}</button>`;
+  } else {
+    $("#dFoot").style.display = "none";
+  }
+}
+function openDrawer(view){
+  S.view = view || "cart";
+  renderDrawer();
+  $("#drawer").classList.add("show"); $("#ovl").classList.add("show");
+  $("#drawer").setAttribute("aria-hidden","false");
+  document.body.classList.add("lock");
+  $("#cbar").classList.remove("show");
+}
+function closeDrawer(){
+  $("#drawer").classList.remove("show"); $("#ovl").classList.remove("show");
+  $("#drawer").setAttribute("aria-hidden","true");
+  document.body.classList.remove("lock");
+  if(S.view === "done"){ S.view = "cart"; }
+  updateBadges();
+}
+
+/* ---------- форма ---------- */
+function setMode(m){
+  S.mode = m;
+  $$("#seg button").forEach(b => b.classList.toggle("on", b.dataset.mode === m));
+  $("#seg").classList.toggle("r", m === "pickup");
+  $("#addrWrap").classList.toggle("hide", m === "pickup");
+  $("#pickWrap").classList.toggle("hide", m !== "pickup");
+  $("#fgAddr").classList.remove("bad");
+  renderDrawer();
+}
+function phoneDigits(){ return $("#fPhone").value.replace(/\D/g,""); }
+function validate(){
+  const bad = [];
+  const set = (id, ok) => { $(id).classList.toggle("bad", !ok); if(!ok) bad.push(id); };
+  set("#fgName", $("#fName").value.trim().length >= 2);
+  set("#fgPhone", phoneDigits().length === 9);
+  if(S.mode === "delivery") set("#fgAddr", $("#fAddr").value.trim().length >= 4);
+  if(bad.length){
+    $(bad[0]).scrollIntoView({behavior:"smooth", block:"center"});
+    $(bad[0]).querySelector("input")?.focus({preventScroll:true});
+    bad.forEach(id => { const el = $(id); el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
+  }
+  return !bad.length;
+}
+function buildMessage(){
+  const L = [];
+  L.push(t("msgHead",{name:CONFIG.name}), "");
+  L.push(`${t("msgName")}: ${$("#fName").value.trim()}`);
+  L.push(`${t("msgPhone")}: +996 ${$("#fPhone").value.trim()}`);
+  L.push(S.mode === "delivery" ? `${t("msgDelivery")}: ${$("#fAddr").value.trim()}` : `${t("msgPickup")}`);
+  const payName = {cash:t("cash"), card:t("card"), elsom:"Элсом", mbank:"MBANK"}[S.pay];
+  L.push(`${t("msgPay")}: ${payName}`, "");
+  L.push(t("msgOrder"));
+  Object.entries(S.cart).forEach(([id,q], i) => { const d = byId(+id); L.push(`${i+1}. ${nm(d)} × ${q} = ${d.p*q} ${t("som")}`); });
+  L.push("", `${t("subtotal")}: ${subtotal()} ${t("som")}`);
+  L.push(`${t("deliveryFee")}: ${S.mode==="pickup" ? "—" : (fee() ? fee()+" "+t("som") : t("free"))}`);
+  L.push(`*${t("total")}: ${total()} ${t("som")}*`);
+  const c = $("#fComment").value.trim();
+  if(c) L.push("", `${t("msgComment")}: ${c}`);
+  return L.join("\n");
+}
+function sendOrder(){
+  if(!validate()) return;
+  const url = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(buildMessage());
+  S.lastUrl = url;
+  $("#waAgain").href = url;
+  const w = window.open(url, "_blank", "noopener");
+  if(!w) location.href = url;
+  S.view = "done"; renderDrawer();
+}
+
+/* ---------- toast ---------- */
+let toastT;
+function toast(msg){
+  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 1800);
+}
+
+/* ---------- события ---------- */
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-act]");
+  if(a){
+    const id = +a.dataset.id, q = S.cart[id] || 0;
+    setQty(id, a.dataset.act === "dec" ? q - 1 : q + 1);
+    return;
+  }
+  const tab = e.target.closest("[data-cat]");
+  if(tab){
+    S.cat = tab.dataset.cat; S.q = ""; $("#search").value = ""; $("#searchBox").classList.remove("has");
+    renderTabs(); renderMenu();
+    tab.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"});
+    const top = $("#menu").getBoundingClientRect().top + scrollY - 60;
+    if(scrollY > top + 200) scrollTo({top, behavior:"smooth"});
+    return;
+  }
+  const lb = e.target.closest("[data-lang]");
+  if(lb){ S.lang = lb.dataset.lang; store.set("cafe_lang", S.lang); applyStatic(); renderTabs(); renderMenu(); renderDrawer(); updateBadges(); return; }
+  if(e.target.closest("[data-close]")){ closeDrawer(); setTimeout(()=>$("#menu").scrollIntoView({behavior:"smooth"}), 250); return; }
+  if(e.target.closest("#goCheckout")){ S.view = "checkout"; renderDrawer(); $(".db").scrollTop = 0; return; }
+  if(e.target.closest("#sendOrder")){ sendOrder(); return; }
+  const m = e.target.closest("[data-mode]"); if(m){ setMode(m.dataset.mode); return; }
+  const p = e.target.closest("[data-pay]");
+  if(p){ S.pay = p.dataset.pay; $$(".pay").forEach(x => x.classList.toggle("on", x === p)); return; }
+});
+$("#cartBtn").onclick = () => openDrawer("cart");
+$("#cbar").onclick = () => openDrawer("cart");
+$("#closeBtn").onclick = closeDrawer;
+$("#ovl").onclick = closeDrawer;
+$("#backBtn").onclick = () => { S.view = "cart"; renderDrawer(); };
+$("#newOrder").onclick = () => {
+  S.cart = {}; store.set("cafe_cart", S.cart);
+  $("#fComment").value = "";
+  DISHES.forEach(d => refreshCtrl(d.id));
+  S.view = "cart"; closeDrawer();
+};
+document.addEventListener("keydown", e => { if(e.key === "Escape" && $("#drawer").classList.contains("show")) closeDrawer(); });
+
+$("#search").addEventListener("input", e => {
+  S.q = e.target.value; $("#searchBox").classList.toggle("has", !!S.q);
+  renderTabs(); renderMenu();
+});
+$("#clearSearch").onclick = () => { $("#search").value = ""; S.q = ""; $("#searchBox").classList.remove("has"); renderTabs(); renderMenu(); $("#search").focus(); };
+
+$("#fPhone").addEventListener("input", e => {
+  let d = e.target.value.replace(/\D/g,"");
+  if(d.startsWith("996") && d.length > 9) d = d.slice(3);
+  if(d.startsWith("0") && d.length > 9) d = d.slice(1);
+  d = d.slice(0,9);
+  e.target.value = [d.slice(0,3), d.slice(3,6), d.slice(6,9)].filter(Boolean).join(" ");
+  if(d.length === 9) $("#fgPhone").classList.remove("bad");
+});
+["#fName","#fAddr"].forEach(s => $(s).addEventListener("input", e => e.target.closest(".fg").classList.remove("bad")));
+$("#vCheckout").addEventListener("submit", e => { e.preventDefault(); sendOrder(); });
+
+/* ---------- старт ---------- */
+applyConfig(); applyStatic(); renderTabs(); renderMenu(); renderDrawer(); updateBadges();
+</script>
+</body>
+</html>
